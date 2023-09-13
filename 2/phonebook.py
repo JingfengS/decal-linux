@@ -56,7 +56,10 @@ class PHONEBOOK:
         content = open(path, 'r')
         while (line := content.readline()):
             information = line.split()
-            self.name_to_number.add(information[0], information[1])
+            if len(information) == 3:
+                self.name_to_number.add(information[0] + " " + information[1], information[2])
+            elif len(information) == 2:
+                self.name_to_number.add(information[0], information[1])
             #print(f"DEBUG: keys = {self.name_to_number.keys}" + 
             #       f" values = {self.name_to_number.values}")
         content.close()
@@ -76,12 +79,8 @@ class PHONEBOOK:
                 content.write(f"{self.name_to_number.keys[i]} {self.name_to_number.values[i]}\n")
 
     def list(self):
-        name_set = set(self.name_to_number.keys)
-        if not name_set:
-            print("The phonebook is empty")
-            return
-        for name in name_set:
-            print(name)
+        for name, number in zip(self.name_to_number.keys, self.name_to_number.values):
+            print(f"{name} {number}")
 
     def remove(self, name):
         self.name_to_number.remove(name)
